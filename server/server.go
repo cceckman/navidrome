@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/http/pprof"
 	"net/url"
 	"path"
 	"strings"
@@ -118,6 +119,9 @@ func (s *Server) initRoutes() {
 		}
 		r.Post("/createAdmin", createAdmin(s.ds))
 	})
+
+	// DEBUG: Include pprof handler
+	r.Handle("/debug/pprof/*", http.HandlerFunc(pprof.Index))
 
 	// Redirect root to UI URL
 	r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
