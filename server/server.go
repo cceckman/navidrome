@@ -128,9 +128,6 @@ func (s *Server) initRoutes() {
 		http.Redirect(w, r, s.appRoot+"/", http.StatusFound)
 	})
 
-	// DEBUG: Include pprof handler
-	r.Handle(path.Join(conf.Server.BasePath, "/debug/pprof/*"), http.HandlerFunc(pprof.Index))
-
 	s.router = r
 }
 
