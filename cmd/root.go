@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http/pprof"
 	"os"
 	"strings"
 	"time"
@@ -85,6 +86,8 @@ func startServer(ctx context.Context) func() error {
 		a.MountRouter("Native API", consts.URLPathNativeAPI, CreateNativeAPIRouter())
 		a.MountRouter("Subsonic API", consts.URLPathSubsonicAPI, CreateSubsonicAPIRouter())
 		a.MountRouter("Public Endpoints", consts.URLPathPublic, CreatePublicRouter())
+		a.MountRouter("Debug endpoints", "/debug/pprof", http.HandlerFunc(pprof.Index))
+
 		if conf.Server.LastFM.Enabled {
 			a.MountRouter("LastFM Auth", consts.URLPathNativeAPI+"/lastfm", CreateLastFMRouter())
 		}
