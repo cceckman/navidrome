@@ -16,6 +16,7 @@ import (
 	"github.com/navidrome/navidrome/resources"
 	"github.com/navidrome/navidrome/scheduler"
 	"github.com/navidrome/navidrome/server/backgrounds"
+	"github.com/navidrome/navidrome/server/debug"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/sync/errgroup"
 
@@ -95,6 +96,9 @@ func startServer(ctx context.Context) func() error {
 			// blocking call because takes <1ms but useful if fails
 			core.WriteInitialMetrics()
 			a.MountRouter("Prometheus metrics", conf.Server.Prometheus.MetricsPath, promhttp.Handler())
+		}
+		if conf.Server.DevDebugHandlers.Enabled {
+			a.MountRouter("Debug handlers", conf.Server.DevDebugHandlers.Path, debug.NewHandler())
 		}
 		if strings.HasPrefix(conf.Server.UILoginBackgroundURL, "/") {
 			a.MountRouter("Background images", consts.DefaultUILoginBackgroundURL, backgrounds.NewHandler())

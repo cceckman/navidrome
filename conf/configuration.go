@@ -89,6 +89,7 @@ type configOptions struct {
 	DevArtworkThrottleBacklogTimeout time.Duration
 	DevArtistInfoTimeToLive          time.Duration
 	DevAlbumInfoTimeToLive           time.Duration
+	DevDebugHandlers                 debugHandlers
 }
 
 type scannerOptions struct {
@@ -116,6 +117,11 @@ type listenBrainzOptions struct {
 type prometheusOptions struct {
 	Enabled     bool
 	MetricsPath string
+}
+
+type debugHandlers struct {
+	Enabled bool
+	Path    string
 }
 
 var (
@@ -297,6 +303,8 @@ func init() {
 	viper.SetDefault("devartworkthrottlebacklogtimeout", consts.RequestThrottleBacklogTimeout)
 	viper.SetDefault("devartistinfotimetolive", consts.ArtistInfoTimeToLive)
 	viper.SetDefault("devalbuminfotimetolive", consts.AlbumInfoTimeToLive)
+	viper.SetDefault("devdebughandlers.enabled", false)
+	viper.SetDefault("devdebughandlers.path", "debug")
 }
 
 func InitConfig(cfgFile string) {
